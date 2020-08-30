@@ -3,9 +3,9 @@ import java.awt.event.KeyEvent;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class FirstResult extends JFrame{
+public class FirstResult extends JFrame {
 
-    private final GridBagConstraints C = new GridBagConstraints();
+    private final GridBagConstraints CONSTRAINTS = new GridBagConstraints();
 
     private JTable tableResults;
     private UpdatedValue updatedValue;
@@ -26,24 +26,24 @@ public class FirstResult extends JFrame{
 
     private void setUpResult1Label(String text) {
         JLabel result1 = new JLabel(text);
-        C.fill = GridBagConstraints.CENTER;
-        C.gridx = 0;
-        C.gridy = 0;
-        C.gridwidth = 4;
-        C.gridheight = 1;
-        C.insets = new Insets(10, 5, 1, 5);
-        add(result1, C);
+        CONSTRAINTS.fill = GridBagConstraints.CENTER;
+        CONSTRAINTS.gridx = 0;
+        CONSTRAINTS.gridy = 0;
+        CONSTRAINTS.gridwidth = 4;
+        CONSTRAINTS.gridheight = 1;
+        CONSTRAINTS.insets = new Insets(10, 5, 1, 5);
+        add(result1, CONSTRAINTS);
     }
 
     private void setUpResult2Label(String text) {
         JLabel result2 = new JLabel(text);
-        C.fill = GridBagConstraints.CENTER;
-        C.gridx = 0;
-        C.gridy = 1;
-        C.gridwidth = 4;
-        C.gridheight = 1;
-        C.insets = new Insets(1, 5, 1, 5);
-        add(result2, C);
+        CONSTRAINTS.fill = GridBagConstraints.CENTER;
+        CONSTRAINTS.gridx = 0;
+        CONSTRAINTS.gridy = 1;
+        CONSTRAINTS.gridwidth = 4;
+        CONSTRAINTS.gridheight = 1;
+        CONSTRAINTS.insets = new Insets(1, 5, 1, 5);
+        add(result2, CONSTRAINTS);
     }
 
     private void setUpTable(UpdatedValue updatedValue) {
@@ -54,13 +54,13 @@ public class FirstResult extends JFrame{
         DefaultTableModel model = (DefaultTableModel) tableResults.getModel();
         tableResults.setEnabled(false);
         tableResults.getTableHeader().setReorderingAllowed(false);
-        C.fill = GridBagConstraints.HORIZONTAL;
-        C.gridx = 0;
-        C.gridy = 3;
-        C.gridwidth = 4;
-        C.insets = new Insets(10, 5, 1, 5);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 0;
+        CONSTRAINTS.gridy = 3;
+        CONSTRAINTS.gridwidth = 4;
+        CONSTRAINTS.insets = new Insets(10, 5, 1, 5);
         JScrollPane scrollPane = new JScrollPane(tableResults);
-        add(scrollPane, C);
+        add(scrollPane, CONSTRAINTS);
         fillTable(updatedValue, tableResults);
     }
 
@@ -68,12 +68,12 @@ public class FirstResult extends JFrame{
     private void setUpExitButton() {
         JButton exit = new JButton("Exit");
         exit.setMnemonic(KeyEvent.VK_E);
-        C.fill = GridBagConstraints.HORIZONTAL;
-        C.gridx = 0;
-        C.gridy = 8;
-        C.gridwidth = 1;
-        C.insets = new Insets(10, 5, 10, 1);
-        add(exit, C);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 0;
+        CONSTRAINTS.gridy = 8;
+        CONSTRAINTS.gridwidth = 1;
+        CONSTRAINTS.insets = new Insets(10, 5, 10, 1);
+        add(exit, CONSTRAINTS);
 
         exit.addActionListener(e -> System.exit(0));
 
@@ -82,26 +82,26 @@ public class FirstResult extends JFrame{
     private void setUpReturnButton() {
         JButton returnButton = new JButton("Return");
         returnButton.setMnemonic(KeyEvent.VK_R);
-        C.fill = GridBagConstraints.HORIZONTAL;
-        C.gridx = 1;
-        C.gridy = 8;
-        C.gridwidth = 1;
-        C.insets = new Insets(10, 1, 10, 1);
-        add(returnButton, C);
-        returnButton.addActionListener(e-> FirstResult.this.setVisible(false));
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 1;
+        CONSTRAINTS.gridy = 8;
+        CONSTRAINTS.gridwidth = 1;
+        CONSTRAINTS.insets = new Insets(10, 1, 10, 1);
+        add(returnButton, CONSTRAINTS);
+        returnButton.addActionListener(e -> FirstResult.this.setVisible(false));
 
     }
 
     private void setUpSaveButton() {
         JButton save = new JButton("Save");
         save.setMnemonic(KeyEvent.VK_S);
-        C.fill = GridBagConstraints.HORIZONTAL;
-        C.gridx = 2;
-        C.gridy = 8;
-        C.gridwidth = 1;
-        C.insets = new Insets(10, 1, 10, 1);
-        add(save, C);
-        save.addActionListener(e-> {
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 2;
+        CONSTRAINTS.gridy = 8;
+        CONSTRAINTS.gridwidth = 1;
+        CONSTRAINTS.insets = new Insets(10, 1, 10, 1);
+        add(save, CONSTRAINTS);
+        save.addActionListener(e -> {
             DefaultTableModel m = (DefaultTableModel) tableResults.getModel();
             ExportToExcel eTE = new ExportToExcel();
             eTE.toExcel(m);
@@ -109,18 +109,18 @@ public class FirstResult extends JFrame{
 
     }
 
-    private void setUpInstallButton(){
+    private void setUpInstallButton() {
 
         JButton install = new JButton("Install");
         install.setMnemonic(KeyEvent.VK_I);
-        C.fill = GridBagConstraints.HORIZONTAL;
-        C.gridx = 3;
-        C.gridy = 8;
-        C.gridwidth = 1;
-        C.insets = new Insets(10, 1, 10, 5);
-        add(install, C);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 3;
+        CONSTRAINTS.gridy = 8;
+        CONSTRAINTS.gridwidth = 1;
+        CONSTRAINTS.insets = new Insets(10, 1, 10, 5);
+        add(install, CONSTRAINTS);
 
-        install.addActionListener(e-> {
+        install.addActionListener(e -> {
             Installment gui = new Installment();
             gui.setDefaultCloseOperation(HIDE_ON_CLOSE);
             gui.setVisible(true);
@@ -128,12 +128,12 @@ public class FirstResult extends JFrame{
             gui.setResizable(false);
             gui.setLocationRelativeTo(null);
             gui.setTitle("Renegotiation");
-            gui.setK(updatedValue);
-            });
+            gui.setUpdatedValue(updatedValue);
+        });
 
     }
 
-    private void fillTable(UpdatedValue updatedValue, JTable table){
+    private void fillTable(UpdatedValue updatedValue, JTable table) {
         for (int i = 0; i < updatedValue.getInstallmentCount(); i++) {
             //Put the information from an array of installments into a table
             if (updatedValue.getInstallments()[i] != null) {
@@ -147,8 +147,6 @@ public class FirstResult extends JFrame{
             }
         }
     }
-
-
 
     public void setUpdatedValue(UpdatedValue updatedValue) {
         this.updatedValue = updatedValue;

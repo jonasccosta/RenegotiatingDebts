@@ -17,7 +17,7 @@ public class UpdatedValue {
         this.interest = interest;
     }
 
-    public void addInstallment(Installments newInstallment){
+    public void addInstallment(Installments newInstallment) {
         //Add a new installment to the Installments[] array
         installments[installmentCount] = newInstallment;
         installmentCount++;
@@ -31,9 +31,10 @@ public class UpdatedValue {
         try {
             y = dg.parse(newDate);
         } catch (ParseException e) {
-            JOptionPane.showMessageDialog(null,"Please insert a valid date.");
+            JOptionPane.showMessageDialog(null, "Please insert a valid date.");
         }
 
+        assert y != null;
         long b = y.getTime() / 86400000;
 
         for (int k = 0; k < installmentCount; k++) {
@@ -43,9 +44,10 @@ public class UpdatedValue {
                 d = df.parse(installments[k].getDate());
 
             } catch (ParseException e) {
-                JOptionPane.showMessageDialog(null,"Please insert a valid date.");
+                JOptionPane.showMessageDialog(null, "Please insert a valid date.");
             }
 
+            assert d != null;
             long a = d.getTime() / 86400000;
             long difference = (b - a);
             int daysDifference = (int) difference;
@@ -57,47 +59,46 @@ public class UpdatedValue {
 
     }
 
-    public int maxDays(){
+    public int maxDays() {
         //Returns the number of days of the oldest installment
         int max = 0;
-        for(int i = 0; i < installmentCount; i++){
-            if(update()[i].getDays() > max){
+        for (int i = 0; i < installmentCount; i++) {
+            if (update()[i].getDays() > max) {
                 max = update()[i].getDays();
             }
         }
         return max;
     }
 
-    public double totalValue(){
+    public double totalValue() {
         /*Calculates the total value of the debt by adding up the initial value
         for each of the installments*/
         double totalValue = 0.0;
-        for(int i = 0; i < installmentCount; i++){
+        for (int i = 0; i < installmentCount; i++) {
             totalValue += update()[i].getValue();
         }
         return totalValue;
     }
 
-    public double decideInterest(){
+    public double decideInterest() {
         /*Return the interest based on the total value of the debt and the value returned by the
         method maxDays()*/
-        if (interest == 0.0){
+        if (interest == 0.0) {
             if (maxDays() < 92) interest = 5;
             else if (totalValue() < 3000 && maxDays() > 1095) interest = 1.5;
             else if (totalValue() > 3000 && maxDays() > 1095) interest = 1;
-            else if (totalValue() <= 3000) interest = (4.5-0.5*((Math.ceil(maxDays()/182.5))-1));
-            else if (totalValue() > 3000) interest = (4.0-0.5*((Math.ceil(maxDays()/182.5))-1));
-            return interest/100;
+            else if (totalValue() <= 3000) interest = (4.5 - 0.5 * ((Math.ceil(maxDays() / 182.5)) - 1));
+            else if (totalValue() > 3000) interest = (4.0 - 0.5 * ((Math.ceil(maxDays() / 182.5)) - 1));
         }
-        else return interest/100;
+        return interest / 100;
     }
 
-    public double decideNewValue(){
+    public double decideNewValue() {
         //Return the updated value of the debt
         double newTotalValue = 0.0;
-        for(int i = 0; i < installmentCount; i++){
+        for (int i = 0; i < installmentCount; i++) {
             //Updates the value and interest for each installment
-            update()[i].setInterest(update()[i].getValue()*update()[i].getDays()*decideInterest()/30);
+            update()[i].setInterest(update()[i].getValue() * update()[i].getDays() * decideInterest() / 30);
             update()[i].setNewValue(update()[i].getValue() + update()[i].getInterest());
             //Add all new values
             newTotalValue += update()[i].getNewValue();
@@ -105,7 +106,7 @@ public class UpdatedValue {
         return newTotalValue;
     }
 
-    public void update(JTable table, Installments[] inst){
+    public void updateTable(JTable table, Installments[] inst) {
         for (int i = 0; i < table.getModel().getRowCount(); i++) {
             if (table.getModel().getValueAt(i, 0) != null && table.getModel().getValueAt(i, 0) != null) {
                 inst[i] = new Installments();
@@ -126,45 +127,40 @@ public class UpdatedValue {
         }
     }
 
-    public double interestValue(){
+    public double interestValue() {
         /*Return the value for the interest based on the difference
         between the new and old values*/
-        double interestValue = this.decideNewValue() - this.totalValue();
-        return interestValue;
+        return this.decideNewValue() - this.totalValue();
     }
 
-    public String formatter(double a){
+    public String formatter(double a) {
         //Returns a numeric string with two decimal places
         DecimalFormat numberFormat = new DecimalFormat("#.00");
         return numberFormat.format(a);
     }
 
-    public double round(double d){
+    public double round(double d) {
         //Round up a value
         return Math.ceil(d);
     }
 
-    public double setDifference(){
+    public double setDifference() {
         //Calculates the difference between the rounded value and non-rounded value
-        double difference = Math.ceil(decideNewValue()) - decideNewValue();
-        return difference;
+        return Math.ceil(decideNewValue()) - decideNewValue();
     }
 
-    public double newInterestValue(){
+    public double newInterestValue() {
         //Updates the interest with the difference between the rounded value and non-rounded value
-        double d = interestValue()+ this.setDifference();
-        return d;
+        return interestValue() + this.setDifference();
 
     }
 
-    public String toString1(){
-        String one = "The updated value is R$" + this.formatter(this.round(this.decideNewValue())) + " for payment on " ;
-        return one;
+    public String toString1() {
+        return "The updated value is R$" + this.formatter(this.round(this.decideNewValue())) + " for payment on ";
     }
 
-    public String toString2(){
-        String two = newDate +  ". Interest value is R$"+ this.formatter(this.newInterestValue()) + " ("+ this.formatter(this.decideInterest()*100) +"%).";
-        return two;
+    public String toString2() {
+        return newDate + ". Interest value is R$" + this.formatter(this.newInterestValue()) + " (" + this.formatter(this.decideInterest() * 100) + "%).";
     }
 
     public int getInstallmentCount() {

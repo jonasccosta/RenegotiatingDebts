@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class FirstRenegotiation extends JFrame {
+    private final GridBagConstraints CONSTRAINTS = new GridBagConstraints();
     private JTextField manualInterest, newDate;
     private ButtonGroup group = new ButtonGroup();
     private JRadioButton automatic, manual;
@@ -16,91 +17,90 @@ public class FirstRenegotiation extends JFrame {
 
     public FirstRenegotiation() throws HeadlessException {
         setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        setUpTable(c);
-        setUpAddRowsButton(c);
-        setUpDate1stPaymentLabel(c);
-        setUpNewDate(c);
-        setUpInterestLabel(c);
-        setUpAutomaticInterestRadioButton(c);
-        setUpManualInterestRadioButton(c);
-        setUpManualInterestTextField(c);
-        setUpExitButton(c);
-        setUpOkButton(c);
+        setUpTable();
+        setUpAddRowsButton();
+        setUpDate1stPaymentLabel();
+        setUpNewDate();
+        setUpInterestLabel();
+        setUpAutomaticInterestRadioButton();
+        setUpManualInterestRadioButton();
+        setUpManualInterestTextField();
+        setUpExitButton();
+        setUpOkButton();
     }
 
 
-    private void setUpTable(GridBagConstraints c) {
+    private void setUpTable() {
         String[] columnNames = {"Value (R$)", "Due Date (dd/mm/yyyy)"};
         String[][] data = new String[5][2];
         table = new JTable(new DefaultTableModel(data, columnNames));
         table.setPreferredScrollableViewportSize(new Dimension(300, 80));
         model = (DefaultTableModel) table.getModel();
         table.getTableHeader().setReorderingAllowed(false);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 1;
-        c.gridwidth = 4;
-        c.insets = new Insets(10, 5, 1, 5);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 0;
+        CONSTRAINTS.gridy = 1;
+        CONSTRAINTS.gridwidth = 4;
+        CONSTRAINTS.insets = new Insets(10, 5, 1, 5);
         JScrollPane scrollPane = new JScrollPane(table);
-        add(scrollPane, c);
+        add(scrollPane, CONSTRAINTS);
     }
 
-    private void setUpAddRowsButton(GridBagConstraints c) {
+    private void setUpAddRowsButton() {
         JButton addRows = new JButton("Add rows");
         addRows.setMnemonic(KeyEvent.VK_R);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 3;
-        c.gridy = 6;
-        c.gridwidth = 1;
-        c.insets = new Insets(1, 1, 1, 5);
-        add(addRows, c);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 3;
+        CONSTRAINTS.gridy = 6;
+        CONSTRAINTS.gridwidth = 1;
+        CONSTRAINTS.insets = new Insets(1, 1, 1, 5);
+        add(addRows, CONSTRAINTS);
 
         addRows.addActionListener(e -> model.addRow(new String[2]));
     }
 
-    private void setUpDate1stPaymentLabel(GridBagConstraints c) {
+    private void setUpDate1stPaymentLabel() {
         JLabel date1stPayment = new JLabel("First date for payment (dd/mm/yyyy):");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 7;
-        c.gridwidth = 2;
-        c.insets = new Insets(10, 5, 1, 1);
-        add(date1stPayment, c);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 0;
+        CONSTRAINTS.gridy = 7;
+        CONSTRAINTS.gridwidth = 2;
+        CONSTRAINTS.insets = new Insets(10, 5, 1, 1);
+        add(date1stPayment, CONSTRAINTS);
     }
 
-    private void setUpNewDate(GridBagConstraints c) {
+    private void setUpNewDate() {
         newDate = new JTextField();
         newDate.setHorizontalAlignment(SwingConstants.RIGHT);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 2;
-        c.gridy = 7;
-        c.gridwidth = 2;
-        c.insets = new Insets(10, 1, 0, 5);
-        add(newDate, c);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 2;
+        CONSTRAINTS.gridy = 7;
+        CONSTRAINTS.gridwidth = 2;
+        CONSTRAINTS.insets = new Insets(10, 1, 0, 5);
+        add(newDate, CONSTRAINTS);
     }
 
-    private void setUpInterestLabel(GridBagConstraints c) {
+    private void setUpInterestLabel() {
         JLabel interest = new JLabel("Interest");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 8;
-        c.gridwidth = 2;
-        c.insets = new Insets(10, 5, 0, 1);
-        add(interest, c);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 0;
+        CONSTRAINTS.gridy = 8;
+        CONSTRAINTS.gridwidth = 2;
+        CONSTRAINTS.insets = new Insets(10, 5, 0, 1);
+        add(interest, CONSTRAINTS);
     }
 
-    private void setUpAutomaticInterestRadioButton(GridBagConstraints c) {
+    private void setUpAutomaticInterestRadioButton() {
         automatic = new JRadioButton("Automatic");
         automatic.setMnemonic(KeyEvent.VK_A);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 9;
-        c.gridwidth = 1;
-        c.insets = new Insets(0, 5, 1, 1);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 0;
+        CONSTRAINTS.gridy = 9;
+        CONSTRAINTS.gridwidth = 1;
+        CONSTRAINTS.insets = new Insets(0, 5, 1, 1);
 
         group.add(automatic);
-        add(automatic, c);
+        add(automatic, CONSTRAINTS);
 
         automatic.addActionListener(e -> {
             if (automatic.isSelected()) {
@@ -109,16 +109,16 @@ public class FirstRenegotiation extends JFrame {
         });
     }
 
-    private void setUpManualInterestRadioButton(GridBagConstraints c) {
+    private void setUpManualInterestRadioButton() {
         manual = new JRadioButton("Manual (%)");
         manual.setMnemonic(KeyEvent.VK_M);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 9;
-        c.gridwidth = 1;
-        c.insets = new Insets(0, 1, 1, 1);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 1;
+        CONSTRAINTS.gridy = 9;
+        CONSTRAINTS.gridwidth = 1;
+        CONSTRAINTS.insets = new Insets(0, 1, 1, 1);
         group.add(manual);
-        add(manual, c);
+        add(manual, CONSTRAINTS);
 
         manual.addActionListener(e -> {
             if (manual.isSelected()) {
@@ -128,40 +128,40 @@ public class FirstRenegotiation extends JFrame {
     }
 
 
-    private void setUpManualInterestTextField(GridBagConstraints c) {
+    private void setUpManualInterestTextField() {
         manualInterest = new JFormattedTextField();
         manualInterest.setEnabled(false);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 2;
-        c.gridy = 9;
-        c.gridwidth = 2;
-        c.insets = new Insets(0, 1, 1, 5);
-        add(manualInterest, c);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 2;
+        CONSTRAINTS.gridy = 9;
+        CONSTRAINTS.gridwidth = 2;
+        CONSTRAINTS.insets = new Insets(0, 1, 1, 5);
+        add(manualInterest, CONSTRAINTS);
     }
 
-    private void setUpExitButton(GridBagConstraints c) {
+    private void setUpExitButton() {
         JButton exit = new JButton("Exit");
         exit.setMnemonic(KeyEvent.VK_E);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 2;
-        c.gridy = 10;
-        c.gridwidth = 1;
-        c.insets = new Insets(10, 1, 10, 1);
-        add(exit, c);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 2;
+        CONSTRAINTS.gridy = 10;
+        CONSTRAINTS.gridwidth = 1;
+        CONSTRAINTS.insets = new Insets(10, 1, 10, 1);
+        add(exit, CONSTRAINTS);
 
         exit.addActionListener(e -> System.exit(0));
 
     }
 
-    private void setUpOkButton(GridBagConstraints c) {
+    private void setUpOkButton() {
         JButton ok = new JButton("OK");
         ok.setMnemonic(KeyEvent.VK_O);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 3;
-        c.gridy = 10;
-        c.gridwidth = 1;
-        c.insets = new Insets(10, 1, 10, 5);
-        add(ok, c);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 3;
+        CONSTRAINTS.gridy = 10;
+        CONSTRAINTS.gridwidth = 1;
+        CONSTRAINTS.insets = new Insets(10, 1, 10, 5);
+        add(ok, CONSTRAINTS);
 
         ok.addActionListener(e -> check());
     }
@@ -201,7 +201,6 @@ public class FirstRenegotiation extends JFrame {
     }
 
 
-
     private double setInterest(JTextField field) {
         //Set the interest as the value inputted in the text field
         double interest = 0.0;
@@ -229,13 +228,13 @@ public class FirstRenegotiation extends JFrame {
 
     }
 
-    private void renegotiate(){
+    private void renegotiate() {
         //If everything is filled correctly, open the window with the results
 
         Installments[] installments = new Installments[table.getModel().getRowCount()];
         double interest = this.setInterest(manualInterest);
         UpdatedValue updated = new UpdatedValue(installments, newDate.getText(), interest);
-        updated.update(table, installments);
+        updated.updateTable(table, installments);
         FirstResult gui = new FirstResult(updated.toString1(), updated.toString2(), updated);
         gui.setDefaultCloseOperation(HIDE_ON_CLOSE);
         gui.setVisible(true);
@@ -248,20 +247,19 @@ public class FirstRenegotiation extends JFrame {
     }
 
 
-
     public void go() {
-        FirstRenegotiation gui = null;
         try {
-            gui = new FirstRenegotiation();
+            FirstRenegotiation gui = new FirstRenegotiation();
+            gui.setVisible(true);
+            gui.pack();
+            gui.setResizable(false);
+            gui.setLocationRelativeTo(null);
+            gui.setTitle("Renegotiation");
+            gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        gui.setVisible(true);
-        gui.pack();
-        gui.setResizable(false);
-        gui.setLocationRelativeTo(null);
-        gui.setTitle("Renegotiation");
-        gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
 
     }
 

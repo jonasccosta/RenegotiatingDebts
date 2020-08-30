@@ -1,131 +1,120 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.*;
 
 public class FinalResult extends JFrame{
-    private JButton save, exit, goBack;
-    private JLabel result1, result2;
     private JTable tableResults;
-    private GridBagConstraints c;
-    private DefaultTableModel model;
-    private JScrollPane scrollPane;
-    private UpdatedValue a;
+    private GridBagConstraints CONSTRAINTS = new GridBagConstraints();
 
-    public FinalResult(){
+    public FinalResult(String result1Label, String result2Label, Installments[] installments, UpdatedValue updatedValue) {
         setLayout(new GridBagLayout());
-        c = new GridBagConstraints();
+        setUpResult1Label(result1Label);
+        setUpResult2Label(result2Label);
+        setUpTable(installments, updatedValue);
+        setUpExitButton();
+        setUpReturnButton();
+        setUpSaveButton();
 
-        result1 = new JLabel("");
-        c.fill = GridBagConstraints.CENTER;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 4;
-        c.gridheight = 1;
-        c.insets = new Insets(10, 5, 1, 5);
-        add(result1, c);
+    }
 
-        result2 = new JLabel("");
-        c.fill = GridBagConstraints.CENTER;
-        c.gridx = 0;
-        c.gridy = 1;
-        c.gridwidth = 4;
-        c.gridheight = 1;
-        c.insets = new Insets(1, 5, 1, 5);
-        add(result2, c);
+    private void setUpResult1Label(String text) {
+        JLabel result1 = new JLabel(text);
+        CONSTRAINTS.fill = GridBagConstraints.CENTER;
+        CONSTRAINTS.gridx = 0;
+        CONSTRAINTS.gridy = 0;
+        CONSTRAINTS.gridwidth = 4;
+        CONSTRAINTS.gridheight = 1;
+        CONSTRAINTS.insets = new Insets(10, 5, 1, 5);
+        add(result1, CONSTRAINTS);
+    }
 
-        String[] columnNames = {"Old Value","Old Date", "Interest", "New Value"};
+    private void setUpResult2Label(String text) {
+        JLabel result2 = new JLabel(text);
+        CONSTRAINTS.fill = GridBagConstraints.CENTER;
+        CONSTRAINTS.gridx = 0;
+        CONSTRAINTS.gridy = 1;
+        CONSTRAINTS.gridwidth = 4;
+        CONSTRAINTS.gridheight = 1;
+        CONSTRAINTS.insets = new Insets(1, 5, 1, 5);
+        add(result2, CONSTRAINTS);
+    }
+
+    private void setUpTable(Installments[] installments, UpdatedValue updatedValue) {
+        String[] columnNames = {"Old Value", "Old Date", "Interest", "New Value"};
         String[][] data = new String[5][4];
         tableResults = new JTable(new DefaultTableModel(data, columnNames));
-        tableResults.setPreferredScrollableViewportSize(new Dimension(300,80));
-        model = (DefaultTableModel)tableResults.getModel();
+        tableResults.setPreferredScrollableViewportSize(new Dimension(300, 80));
+        DefaultTableModel model = (DefaultTableModel) tableResults.getModel();
         tableResults.setEnabled(false);
         tableResults.getTableHeader().setReorderingAllowed(false);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 3;
-        c.gridwidth = 4;
-        c.insets = new Insets(10, 5, 1, 5);
-        scrollPane = new JScrollPane(tableResults);
-        add(scrollPane, c);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 0;
+        CONSTRAINTS.gridy = 3;
+        CONSTRAINTS.gridwidth = 4;
+        CONSTRAINTS.insets = new Insets(10, 5, 1, 5);
+        JScrollPane scrollPane = new JScrollPane(tableResults);
+        add(scrollPane, CONSTRAINTS);
+        fillTable(tableResults, installments, updatedValue);
 
-        exit = new JButton("Exit");
+    }
+
+    private void setUpExitButton() {
+        JButton exit = new JButton("Exit");
         exit.setMnemonic(KeyEvent.VK_E);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 9;
-        c.gridwidth = 1;
-        c.insets = new Insets(10, 5, 10, 1);
-        add(exit, c);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 1;
+        CONSTRAINTS.gridy = 9;
+        CONSTRAINTS.gridwidth = 1;
+        CONSTRAINTS.insets = new Insets(10, 5, 10, 1);
+        add(exit, CONSTRAINTS);
+        exit.addActionListener(e-> System.exit(0));
 
-        exit ex = new exit();
-        exit.addActionListener(ex);
+    }
 
-        goBack = new JButton("Return");
+    private void setUpReturnButton() {
+        JButton goBack = new JButton("Return");
         goBack.setMnemonic(KeyEvent.VK_R);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 2;
-        c.gridy = 9;
-        c.gridwidth = 1;
-        c.insets = new Insets(10, 1, 10, 1);
-        add(goBack, c);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 2;
+        CONSTRAINTS.gridy = 9;
+        CONSTRAINTS.gridwidth = 1;
+        CONSTRAINTS.insets = new Insets(10, 1, 10, 1);
+        add(goBack, CONSTRAINTS);
 
-        goBack gb = new goBack();
-        goBack.addActionListener(gb);
+        goBack.addActionListener(e-> FinalResult.this.setVisible(false));
+    }
 
-        save = new JButton("Save");
+    private void setUpSaveButton() {
+
+        JButton save = new JButton("Save");
         save.setMnemonic(KeyEvent.VK_S);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 3;
-        c.gridy = 9;
-        c.gridwidth = 1;
-        c.insets = new Insets(10, 1, 10, 1);
-        add(save, c);
+        CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
+        CONSTRAINTS.gridx = 3;
+        CONSTRAINTS.gridy = 9;
+        CONSTRAINTS.gridwidth = 1;
+        CONSTRAINTS.insets = new Insets(10, 1, 10, 1);
+        add(save, CONSTRAINTS);
 
-        save s = new save();
-        save.addActionListener(s);
-
-    }
-
-    public class goBack implements ActionListener{
-        //Go back to the previous window
-        public void actionPerformed(ActionEvent e) {
-            FinalResult.this.setVisible(false);
-        }
-    }
-
-    public class exit implements ActionListener {
-        //Exits the program
-        public void actionPerformed(ActionEvent e) {
-            System.exit(0);
-        }
-    }
-
-    public class save implements ActionListener{
-        //Open the window to save the table into a xls file
-        public void actionPerformed(ActionEvent e) {
-            DefaultTableModel m = (DefaultTableModel)tableResults.getModel();
+        save.addActionListener(e-> {
+            DefaultTableModel m = (DefaultTableModel) tableResults.getModel();
             ExportToExcel eTE = new ExportToExcel();
             eTE.toExcel(m);
+        });
+    }
+
+
+    private void fillTable(JTable table, Installments[] installments, UpdatedValue updatedValue){
+        System.out.println(installments.length);
+        for(int i = 0; i < installments.length; i++){
+            //Put the information from an array of installments into a table
+            table.getModel().setValueAt("R$ " + updatedValue.formatter(installments[i].getValue()), i, 0);
+            table.getModel().setValueAt(installments[i].getDate(), i, 1);
+            table.getModel().setValueAt("R$ " + updatedValue.formatter(installments[i].getInterest()),i, 2);
+            table.getModel().setValueAt("R$ " + updatedValue.formatter(installments[i].getNewValue()), i, 3);
         }
     }
 
-    public JLabel getResult1() {
-        return result1;
-    }
 
-    public JLabel getResult2() {
-        return result2;
-    }
-
-    public void setA(UpdatedValue a) {
-        this.a = a;
-    }
-
-    public JTable getTableResults() {
-        return tableResults;
-    }
 }
 

@@ -8,8 +8,6 @@ public class NewInstallments {
     private UpdatedValue firstInstallment;
     private int numberOfInstallments;
     private int daysInstallments;
-    private double[] newValues;
-    private String[] newDates;
     private double finalValue;
 
     public NewInstallments(UpdatedValue firstInstallment, int numberOfInstallments, int daysInstallments) {
@@ -20,8 +18,7 @@ public class NewInstallments {
 
     public double firstValue(int numberOfInstallments) {
         //Divides the new value into a specific number of installments
-        double newValue = firstInstallment.decideNewValue() / numberOfInstallments;
-        return newValue;
+        return firstInstallment.decideNewValue() / numberOfInstallments;
     }
 
 
@@ -32,7 +29,7 @@ public class NewInstallments {
     public double[] newValues() {
         /*Update, with interest, the value returned by the method firstValue(int numberOfInstallments)
         for the number of dates and way of install specified by the client*/
-        newValues = new double[numberOfInstallments];
+        double[] newValues = new double[numberOfInstallments];
         for (int i = 0; i < newValues.length; i++) {
             newValues[i] = firstValue(numberOfInstallments) + firstValue(numberOfInstallments) * i * daysInstallments * firstInstallment.decideInterest() / 30;
         }
@@ -53,7 +50,7 @@ public class NewInstallments {
         /*Return the dates in which the client will make the payments
             being that the difference between the dates will be the
             value specified by the client*/
-        newDates = new String[numberOfInstallments];
+        String[] newDates = new String[numberOfInstallments];
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         Date d = null;
         try {
@@ -67,6 +64,7 @@ public class NewInstallments {
 
         newDates[0] = df.format(d);
         for (int i = 1; i < numberOfInstallments; i++) {
+            assert d != null;
             myCal.setTime(d);
             myCal.add(Calendar.DAY_OF_MONTH, daysInstallments);
             d = myCal.getTime();
@@ -79,13 +77,13 @@ public class NewInstallments {
     public String toString2(String[] a) {
         /*Put the elements of a array into a single string
         with correct punctuation and spacing*/
-        String b = "";
+        StringBuilder b = new StringBuilder();
         for (int i = 0; i < a.length - 1; i++) {
-            b += a[i] + ", ";
+            b.append(a[i]).append(", ");
         }
-        b += a[a.length - 1] + ".";
+        b.append(a[a.length - 1]).append(".");
 
-        return b;
+        return b.toString();
     }
 
     public Installments[] newInst() {
