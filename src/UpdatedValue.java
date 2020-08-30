@@ -9,7 +9,13 @@ public class UpdatedValue {
     private Installments[] installments;
     private int installmentCount = 0;
     private String newDate;
-    private double interest, difference;
+    private double interest;
+
+    public UpdatedValue(Installments[] installments, String newDate, double interest) {
+        this.installments = installments;
+        this.newDate = newDate;
+        this.interest = interest;
+    }
 
     public void addInstallment(Installments newInstallment){
         //Add a new installment to the Installments[] array
@@ -99,6 +105,27 @@ public class UpdatedValue {
         return newTotalValue;
     }
 
+    public void update(JTable table, Installments[] inst){
+        for (int i = 0; i < table.getModel().getRowCount(); i++) {
+            if (table.getModel().getValueAt(i, 0) != null && table.getModel().getValueAt(i, 0) != null) {
+                inst[i] = new Installments();
+                String c = (String) table.getModel().getValueAt(i, 0);
+                try {
+                    double d = Double.parseDouble(c);
+                    inst[i].setValue(d);
+                } catch (NumberFormatException excep) {
+                    JOptionPane.showMessageDialog(null, "Please enter a valid value!");
+                    //gui.setVisible(false);
+                }
+
+                String f = (String) table.getModel().getValueAt(i, 1);
+                inst[i].setDate(f);
+
+                this.addInstallment(inst[i]);
+            }
+        }
+    }
+
     public double interestValue(){
         /*Return the value for the interest based on the difference
         between the new and old values*/
@@ -119,7 +146,7 @@ public class UpdatedValue {
 
     public double setDifference(){
         //Calculates the difference between the rounded value and non-rounded value
-        difference = Math.ceil(decideNewValue()) - decideNewValue();
+        double difference = Math.ceil(decideNewValue()) - decideNewValue();
         return difference;
     }
 
@@ -156,9 +183,6 @@ public class UpdatedValue {
         this.interest = interest;
     }
 
-    public UpdatedValue(Installments[] installments, String newDate) {
-        this.installments = installments;
-        this.newDate = newDate;
-    }
+
 }
 

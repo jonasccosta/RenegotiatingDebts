@@ -200,31 +200,7 @@ public class FirstRenegotiation extends JFrame {
 
     }
 
-    private UpdatedValue uV(JTable table, FirstResult gui, Installments[] inst, UpdatedValue k) {
-            /*Check if the values inputted in the table can be parsed into doubles and set them
-            as the values for an array of installments*/
 
-        for (int i = 0; i < table.getModel().getRowCount(); i++) {
-            if (table.getModel().getValueAt(i, 0) != null && table.getModel().getValueAt(i, 0) != null) {
-                inst[i] = new Installments();
-                String c = (String) table.getModel().getValueAt(i, 0);
-                try {
-                    double d = Double.parseDouble(c);
-                    inst[i].setValue(d);
-                } catch (NumberFormatException excep) {
-                    JOptionPane.showMessageDialog(null, "Please enter a valid value!");
-                    gui.setVisible(false);
-                }
-
-                String f = (String) table.getModel().getValueAt(i, 1);
-                inst[i].setDate(f);
-
-                k.addInstallment(inst[i]);
-            }
-        }
-
-        return k;
-    }
 
     private double setInterest(JTextField field) {
         //Set the interest as the value inputted in the text field
@@ -241,7 +217,6 @@ public class FirstRenegotiation extends JFrame {
         if (!isDate(newDate)) {
             JOptionPane.showMessageDialog(null, "Please enter a valid date for payment.");
         }
-
         if (!manual.isSelected() && !automatic.isSelected()) {
             JOptionPane.showMessageDialog(null, "Please select the interest type.");
         } else if (manual.isSelected() && !isDouble(manualInterest.getText())) {
@@ -256,33 +231,20 @@ public class FirstRenegotiation extends JFrame {
 
     private void renegotiate(){
         //If everything is filled correctly, open the window with the results
-        Installments[] test = new Installments[table.getModel().getRowCount()];
-        UpdatedValue k = new UpdatedValue(test, newDate.getText());
-        FirstResult gui = new FirstResult();
-        UpdatedValue updated = uV(table, gui, test, k);
-        updated.setInterest(this.setInterest(manualInterest));
+
+        Installments[] installments = new Installments[table.getModel().getRowCount()];
+        double interest = this.setInterest(manualInterest);
+        UpdatedValue updated = new UpdatedValue(installments, newDate.getText(), interest);
+        updated.update(table, installments);
+        FirstResult gui = new FirstResult(updated.toString1(), updated.toString2(), updated);
         gui.setDefaultCloseOperation(HIDE_ON_CLOSE);
         gui.setVisible(true);
         gui.pack();
         gui.setResizable(false);
         gui.setLocationRelativeTo(null);
         gui.setTitle("Renegotiation");
-        gui.getResult1().setText(updated.toString1());
-        gui.getResult2().setText(updated.toString2());
-        gui.setK(updated);
+        gui.setUpdatedValue(updated);
 
-        for (int i = 0; i < updated.getInstallmentCount(); i++) {
-            //Put the information from an array of installments into a table
-            if (test[i] != null) {
-                double a = updated.setDifference() / updated.getInstallmentCount();
-                double d = test[i].getInterest() + a;
-                double w = test[i].getNewValue() + a;
-                gui.getTableResults().getModel().setValueAt("R$ " + updated.formatter(test[i].getValue()), i, 0);
-                gui.getTableResults().getModel().setValueAt(test[i].getDate(), i, 1);
-                gui.getTableResults().getModel().setValueAt("R$ " + updated.formatter(d), i, 2);
-                gui.getTableResults().getModel().setValueAt("R$ " + updated.formatter(w), i, 3);
-            }
-        }
     }
 
 
