@@ -1,9 +1,3 @@
-/**
- * Creates an Excel file with the information from a JTable
- *
- * @author Jonas C. Costa
- */
-
 import java.io.File;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import java.io.FileOutputStream;
@@ -19,6 +13,12 @@ import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+
+/**
+ * Creates an Excel file with the information from a JTable
+ *
+ * @author Jonas C. Costa
+ */
 
 public class ExportToExcel {
     static String fileDictName = "";

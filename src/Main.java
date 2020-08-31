@@ -1,12 +1,12 @@
 public class Main {
     public static void main(String[] args) {
-        FirstRenegotiation a = null;
+        RenegotiationScreen a = null;
         try {
-            a = new FirstRenegotiation();
+            a = new RenegotiationScreen();
+            a.go();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        a.go();
     }
 }
 

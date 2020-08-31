@@ -1,12 +1,3 @@
-/**
- * Class that gathers information about the the debts of a client (value of each previous installment,
- * date in which the client were expected to pay, the first date in which the client will start paying,
- * and the way in which the interest will be calculated). This software was created based on my experience
- * working with debt collection and follows the rules of the company I used to work at the time.
- *
- * @author: Jonas C. Costa
- */
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.text.DateFormat;
@@ -16,7 +7,16 @@ import java.util.Date;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class FirstRenegotiation extends JFrame {
+/**
+ * Class that gathers information about the the debts of a client (value of each previous installment,
+ * date in which the client were expected to pay, the first date in which the client will start paying,
+ * and the way in which the interest will be calculated). This software was created based on my experience
+ * working with debt collection and follows the rules of the company I used to work at the time.
+ *
+ * @author Jonas C. Costa
+ */
+
+public class RenegotiationScreen extends JFrame {
     private final GridBagConstraints CONSTRAINTS = new GridBagConstraints();
     private JTextField manualInterest, newDate;
     private ButtonGroup group = new ButtonGroup();
@@ -24,7 +24,7 @@ public class FirstRenegotiation extends JFrame {
     private JTable table;
     private DefaultTableModel model;
 
-    public FirstRenegotiation() {
+    public RenegotiationScreen() {
         setLayout(new GridBagLayout());
         setUpTable();
         setUpAddRowsButton();
@@ -117,7 +117,7 @@ public class FirstRenegotiation extends JFrame {
      * Creates a radio button for the automatic interest type. If this radio button is selected,
      * then the text field for manual interest will be disabled.
      *
-     * @see UpdatedValue#decideInterest()
+     * @see DebtUpdater#decideInterest()
      */
     private void setUpAutomaticInterestRadioButton() {
         automatic = new JRadioButton("Automatic");
@@ -289,11 +289,11 @@ public class FirstRenegotiation extends JFrame {
      * Opens a new window with the updated value of the debt.
      */
     private void renegotiate() {
-        Installments[] installments = new Installments[table.getModel().getRowCount()];
+        Installment[] installments = new Installment[table.getModel().getRowCount()];
         double interest = this.setInterest(manualInterest);
-        UpdatedValue updated = new UpdatedValue(installments, newDate.getText(), interest);
+        DebtUpdater updated = new DebtUpdater(installments, newDate.getText(), interest);
         updated.updateTable(table, installments);
-        FirstResult gui = new FirstResult(updated.toString1(), updated.toString2(), updated);
+        FirstResultScreenScreen gui = new FirstResultScreenScreen(updated.toString1(), updated.toString2(), updated);
         gui.setDefaultCloseOperation(HIDE_ON_CLOSE);
         gui.setVisible(true);
         gui.pack();
@@ -307,7 +307,7 @@ public class FirstRenegotiation extends JFrame {
      */
     public void go() {
         try {
-            FirstRenegotiation gui = new FirstRenegotiation();
+            RenegotiationScreen gui = new RenegotiationScreen();
             gui.setVisible(true);
             gui.pack();
             gui.setResizable(false);

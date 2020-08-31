@@ -1,23 +1,21 @@
-/**
- * Class that shows the updated value of the debt if the client wants to pay in just one date
- *
- * @author: Jonas C. Costa
- */
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
 
-public class FirstResult extends Result {
+/**
+ * Class that shows the updated value of the debt if the client wants to pay in just one date
+ *
+ * @author Jonas C. Costa
+ */
 
+public class FirstResultScreenScreen extends ResultScreen {
     private final GridBagConstraints CONSTRAINTS = new GridBagConstraints();
-    private UpdatedValue updatedValue;
+    private DebtUpdater debtUpdater;
 
-
-    public FirstResult(String result1Text, String result2Text, UpdatedValue updatedValue) {
+    public FirstResultScreenScreen(String result1Text, String result2Text, DebtUpdater debtUpdater) {
         super(result1Text, result2Text);
-        super.fillTable(updatedValue);
-        this.updatedValue = updatedValue;
+        super.fillTable(debtUpdater);
+        this.debtUpdater = debtUpdater;
         setUpInstallButton();
 
     }
@@ -36,14 +34,14 @@ public class FirstResult extends Result {
         add(install, CONSTRAINTS);
 
         install.addActionListener(e -> {
-            Installment gui = new Installment();
+            InstallScreen gui = new InstallScreen();
             gui.setDefaultCloseOperation(HIDE_ON_CLOSE);
             gui.setVisible(true);
             gui.pack();
             gui.setResizable(false);
             gui.setLocationRelativeTo(null);
             gui.setTitle("Renegotiation");
-            gui.setUpdatedValue(updatedValue);
+            gui.setDebtUpdater(debtUpdater);
         });
     }
 

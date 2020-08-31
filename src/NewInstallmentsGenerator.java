@@ -1,22 +1,22 @@
-/**
- * Holds information and manipulates the new installments, in case the client wants to divide their debts again
- *
- * @author Jonas C. Costa
- */
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class NewInstallments {
-    private UpdatedValue firstInstallment;
+/**
+ * Holds information and manipulates the new installments, in case the client wants to divide their debts again
+ *
+ * @author Jonas C. Costa
+ */
+
+public class NewInstallmentsGenerator {
+    private DebtUpdater firstInstallment;
     private int numberOfInstallments;
     private int daysInstallments;
     private double finalValue;
 
-    public NewInstallments(UpdatedValue firstInstallment, int numberOfInstallments, int daysInstallments) {
+    public NewInstallmentsGenerator(DebtUpdater firstInstallment, int numberOfInstallments, int daysInstallments) {
         this.firstInstallment = firstInstallment;
         this.numberOfInstallments = numberOfInstallments;
         this.daysInstallments = daysInstallments;
@@ -113,11 +113,11 @@ public class NewInstallments {
      * first inputted by the user.
      * @return an array of installments containing the new information about the debt
      */
-    public Installments[] newInst() {
-        Installments[] inst = new Installments[firstInstallment.getInstallmentCount()];
+    public Installment[] newInst() {
+        Installment[] inst = new Installment[firstInstallment.getInstallmentCount()];
         double difference = (finalValue() * numberOfInstallments - firstInstallment.decideNewValue()) / inst.length;
         for (int i = 0; i < inst.length; i++) {
-            inst[i] = new Installments();
+            inst[i] = new Installment();
             inst[i].setValue(firstInstallment.getInstallments()[i].getValue());
             inst[i].setInterest(firstInstallment.getInstallments()[i].getInterest() + difference);
             inst[i].setNewValue(inst[i].getValue() + inst[i].getInterest());

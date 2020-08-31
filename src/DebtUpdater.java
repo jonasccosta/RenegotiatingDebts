@@ -1,9 +1,3 @@
-/**
- * Class that manipulates the data inputted by the user, calculating the updated value for the debt
- *
- * @author Jonas C. Costa
- */
-
 import javax.swing.*;
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -11,13 +5,19 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
-public class UpdatedValue {
-    private Installments[] installments;
+/**
+ * Class that manipulates the data inputted by the user, calculating the updated value for the debt
+ *
+ * @author Jonas C. Costa
+ */
+
+public class DebtUpdater {
+    private Installment[] installments;
     private int installmentCount = 0;
     private String newDate;
     private double interest;
 
-    public UpdatedValue(Installments[] installments, String newDate, double interest) {
+    public DebtUpdater(Installment[] installments, String newDate, double interest) {
         this.installments = installments;
         this.newDate = newDate;
         this.interest = interest;
@@ -28,7 +28,7 @@ public class UpdatedValue {
      *
      * @param newInstallment the installment that will be added to the array
      */
-    public void addInstallment(Installments newInstallment) {
+    public void addInstallment(Installment newInstallment) {
         installments[installmentCount] = newInstallment;
         installmentCount++;
     }
@@ -38,7 +38,7 @@ public class UpdatedValue {
      *
      * @return the array of installments with the days parameter of each installment updated
      */
-    public Installments[] update() {
+    public Installment[] update() {
 
         DateFormat dg = new SimpleDateFormat("dd/MM/yyyy");
         Date y = null;
@@ -145,10 +145,10 @@ public class UpdatedValue {
      * @param table table in which the data with be entered
      * @param inst  holds the data
      */
-    public void updateTable(JTable table, Installments[] inst) {
+    public void updateTable(JTable table, Installment[] inst) {
         for (int i = 0; i < table.getModel().getRowCount(); i++) {
             if (table.getModel().getValueAt(i, 0) != null && table.getModel().getValueAt(i, 0) != null) {
-                inst[i] = new Installments();
+                inst[i] = new Installment();
                 String c = (String) table.getModel().getValueAt(i, 0);
                 try {
                     double d = Double.parseDouble(c);
@@ -232,7 +232,7 @@ public class UpdatedValue {
         return newDate;
     }
 
-    public Installments[] getInstallments() {
+    public Installment[] getInstallments() {
         return installments;
     }
 

@@ -1,20 +1,20 @@
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+
 /**
  * Class the holds the template for both the result screens
  *
  * @author Jonas C. Costa
  */
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.KeyEvent;
-
-public class Result extends JFrame {
+public class ResultScreen extends JFrame {
 
     private final GridBagConstraints CONSTRAINTS = new GridBagConstraints();
     private JTable tableResults;
 
-    public Result(String result1Text, String result2Text) {
+    public ResultScreen(String result1Text, String result2Text) {
         setLayout(new GridBagLayout());
         setUpResult1Label(result1Text);
         setUpResult2Label(result2Text);
@@ -105,7 +105,7 @@ public class Result extends JFrame {
         CONSTRAINTS.gridwidth = 1;
         CONSTRAINTS.insets = new Insets(10, 1, 10, 1);
         add(returnButton, CONSTRAINTS);
-        returnButton.addActionListener(e -> Result.this.setVisible(false));
+        returnButton.addActionListener(e -> ResultScreen.this.setVisible(false));
 
     }
 
@@ -131,19 +131,19 @@ public class Result extends JFrame {
 
     /**
      * Fills the table with the updated data about the debt
-     * @param updatedValue holds the information about the debt
+     * @param debtUpdater holds the information about the debt
      */
-    protected void fillTable(UpdatedValue updatedValue) {
-        for (int i = 0; i < updatedValue.getInstallmentCount(); i++) {
+    protected void fillTable(DebtUpdater debtUpdater) {
+        for (int i = 0; i < debtUpdater.getInstallmentCount(); i++) {
             //Put the information from an array of installments into a table
-            if (updatedValue.getInstallments()[i] != null) {
-                double a = updatedValue.setDifference() / updatedValue.getInstallmentCount();
-                double d = updatedValue.getInstallments()[i].getInterest() + a;
-                double w = updatedValue.getInstallments()[i].getNewValue() + a;
-                tableResults.getModel().setValueAt("R$ " + updatedValue.formatter(updatedValue.getInstallments()[i].getValue()), i, 0);
-                tableResults.getModel().setValueAt(updatedValue.getInstallments()[i].getDate(), i, 1);
-                tableResults.getModel().setValueAt("R$ " + updatedValue.formatter(d), i, 2);
-                tableResults.getModel().setValueAt("R$ " + updatedValue.formatter(w), i, 3);
+            if (debtUpdater.getInstallments()[i] != null) {
+                double a = debtUpdater.setDifference() / debtUpdater.getInstallmentCount();
+                double d = debtUpdater.getInstallments()[i].getInterest() + a;
+                double w = debtUpdater.getInstallments()[i].getNewValue() + a;
+                tableResults.getModel().setValueAt("R$ " + debtUpdater.formatter(debtUpdater.getInstallments()[i].getValue()), i, 0);
+                tableResults.getModel().setValueAt(debtUpdater.getInstallments()[i].getDate(), i, 1);
+                tableResults.getModel().setValueAt("R$ " + debtUpdater.formatter(d), i, 2);
+                tableResults.getModel().setValueAt("R$ " + debtUpdater.formatter(w), i, 3);
             }
         }
     }
@@ -151,15 +151,15 @@ public class Result extends JFrame {
     /**
      * Fills the table with the updated data about the debt
      * @param installments holds information about the new installments
-     * @param updatedValue holds the information about the debt
+     * @param debtUpdater holds the information about the debt
      */
-    protected void fillTable(Installments[] installments, UpdatedValue updatedValue) {
+    protected void fillTable(Installment[] installments, DebtUpdater debtUpdater) {
         System.out.println(installments.length);
         for (int i = 0; i < installments.length; i++) {
-            tableResults.getModel().setValueAt("R$ " + updatedValue.formatter(installments[i].getValue()), i, 0);
+            tableResults.getModel().setValueAt("R$ " + debtUpdater.formatter(installments[i].getValue()), i, 0);
             tableResults.getModel().setValueAt(installments[i].getDate(), i, 1);
-            tableResults.getModel().setValueAt("R$ " + updatedValue.formatter(installments[i].getInterest()), i, 2);
-            tableResults.getModel().setValueAt("R$ " + updatedValue.formatter(installments[i].getNewValue()), i, 3);
+            tableResults.getModel().setValueAt("R$ " + debtUpdater.formatter(installments[i].getInterest()), i, 2);
+            tableResults.getModel().setValueAt("R$ " + debtUpdater.formatter(installments[i].getNewValue()), i, 3);
         }
     }
 
