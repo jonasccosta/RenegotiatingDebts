@@ -1,3 +1,9 @@
+/**
+ * Class that manipulates the data inputted by the user, calculating the updated value for the debt
+ *
+ * @author Jonas C. Costa
+ */
+
 import javax.swing.*;
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -17,15 +23,23 @@ public class UpdatedValue {
         this.interest = interest;
     }
 
+    /**
+     * Add a new installment to the Installments[] array
+     *
+     * @param newInstallment the installment that will be added to the array
+     */
     public void addInstallment(Installments newInstallment) {
-        //Add a new installment to the Installments[] array
         installments[installmentCount] = newInstallment;
         installmentCount++;
     }
 
+    /**
+     * Calculate the difference, in days, between the old date and the first date in which the client will make a payment
+     *
+     * @return the array of installments with the days parameter of each installment updated
+     */
     public Installments[] update() {
-        /*Calculate the difference, in days, between the old date and the first date
-          that the client wants to pay*/
+
         DateFormat dg = new SimpleDateFormat("dd/MM/yyyy");
         Date y = null;
         try {
@@ -59,8 +73,10 @@ public class UpdatedValue {
 
     }
 
+    /**
+     * @return the number of days of the oldest installment
+     */
     public int maxDays() {
-        //Returns the number of days of the oldest installment
         int max = 0;
         for (int i = 0; i < installmentCount; i++) {
             if (update()[i].getDays() > max) {
@@ -70,9 +86,13 @@ public class UpdatedValue {
         return max;
     }
 
+    /**
+     * Calculates the total value of the debt by adding up the initial value for each of the installments
+     *
+     * @return the total value of the debt
+     */
     public double totalValue() {
-        /*Calculates the total value of the debt by adding up the initial value
-        for each of the installments*/
+
         double totalValue = 0.0;
         for (int i = 0; i < installmentCount; i++) {
             totalValue += update()[i].getValue();
@@ -80,9 +100,19 @@ public class UpdatedValue {
         return totalValue;
     }
 
+    /**
+     * If the automatic radio button was selected, it calculates the interest automatically based on the algorithm:
+     * If the debt is less than 92 days old, interest is 5.0%
+     * Else, if the total value of the debt is less than R$3000,00 and the debt is more than 1095 days old, interest is 1.5%
+     * Else, if the total value of the debt is greater than R$3000,00 and the debt is more than 1095 days old, interest is 1.0%
+     * Else, if the total value of the debt is less than or equals to R$3000,00, interest is 4.5-0.5*((days/182.5)-1)
+     * Else, if the total value of the debt is greater than R$3000,00, interest is 4.0-0.5*((days/182.5)-1)
+     * <p>
+     * If the interest was inputted manually, then it returns that interest
+     *
+     * @return the interest for the renegotiation
+     */
     public double decideInterest() {
-        /*Return the interest based on the total value of the debt and the value returned by the
-        method maxDays()*/
         if (interest == 0.0) {
             if (maxDays() < 92) interest = 5;
             else if (totalValue() < 3000 && maxDays() > 1095) interest = 1.5;
@@ -93,8 +123,11 @@ public class UpdatedValue {
         return interest / 100;
     }
 
+    /**
+     * @return the updated value of the debt
+     */
     public double decideNewValue() {
-        //Return the updated value of the debt
+
         double newTotalValue = 0.0;
         for (int i = 0; i < installmentCount; i++) {
             //Updates the value and interest for each installment
@@ -106,6 +139,12 @@ public class UpdatedValue {
         return newTotalValue;
     }
 
+    /**
+     * Fills a table with the updated values of the debt
+     *
+     * @param table table in which the data with be entered
+     * @param inst  holds the data
+     */
     public void updateTable(JTable table, Installments[] inst) {
         for (int i = 0; i < table.getModel().getRowCount(); i++) {
             if (table.getModel().getValueAt(i, 0) != null && table.getModel().getValueAt(i, 0) != null) {
@@ -116,49 +155,71 @@ public class UpdatedValue {
                     inst[i].setValue(d);
                 } catch (NumberFormatException excep) {
                     JOptionPane.showMessageDialog(null, "Please enter a valid value!");
-                    //gui.setVisible(false);
                 }
-
                 String f = (String) table.getModel().getValueAt(i, 1);
                 inst[i].setDate(f);
-
                 this.addInstallment(inst[i]);
             }
         }
     }
 
+    /**
+     * @return the value for the interest based on the difference between the new and old values
+     */
     public double interestValue() {
-        /*Return the value for the interest based on the difference
-        between the new and old values*/
         return this.decideNewValue() - this.totalValue();
     }
 
+    /**
+     * Returns a numeric string with two decimal places
+     *
+     * @param a double that will be formatted
+     * @return numeric string formatted to two decimal places
+     */
     public String formatter(double a) {
-        //Returns a numeric string with two decimal places
         DecimalFormat numberFormat = new DecimalFormat("#.00");
         return numberFormat.format(a);
     }
 
+    /**
+     * Rounds up a value
+     *
+     * @param d value that will be rounded
+     * @return rounded value
+     */
     public double round(double d) {
-        //Round up a value
         return Math.ceil(d);
     }
 
+    /**
+     * Calculates the difference between the rounded value and non-rounded value
+     *
+     * @return the difference between the rounded value and non-rounded value
+     */
     public double setDifference() {
-        //Calculates the difference between the rounded value and non-rounded value
         return Math.ceil(decideNewValue()) - decideNewValue();
     }
 
+    /**
+     * Updates the interest with the difference between the rounded value and non-rounded value
+     * This needs to be done to account for rounding, since all new values need to be rounded up
+     *
+     * @return the new interest value
+     */
     public double newInterestValue() {
-        //Updates the interest with the difference between the rounded value and non-rounded value
         return interestValue() + this.setDifference();
-
     }
 
+    /**
+     * @return string with the first line of the result
+     */
     public String toString1() {
         return "The updated value is R$" + this.formatter(this.round(this.decideNewValue())) + " for payment on ";
     }
 
+    /**
+     * @return string with the second line of the result
+     */
     public String toString2() {
         return newDate + ". Interest value is R$" + this.formatter(this.newInterestValue()) + " (" + this.formatter(this.decideInterest() * 100) + "%).";
     }
@@ -174,11 +235,6 @@ public class UpdatedValue {
     public Installments[] getInstallments() {
         return installments;
     }
-
-    public void setInterest(double interest) {
-        this.interest = interest;
-    }
-
 
 }
 

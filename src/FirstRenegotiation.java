@@ -1,3 +1,12 @@
+/**
+ * Class that gathers information about the the debts of a client (value of each previous installment,
+ * date in which the client were expected to pay, the first date in which the client will start paying,
+ * and the way in which the interest will be calculated). This software was created based on my experience
+ * working with debt collection and follows the rules of the company I used to work at the time.
+ *
+ * @author: Jonas C. Costa
+ */
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.text.DateFormat;
@@ -15,7 +24,7 @@ public class FirstRenegotiation extends JFrame {
     private JTable table;
     private DefaultTableModel model;
 
-    public FirstRenegotiation() throws HeadlessException {
+    public FirstRenegotiation() {
         setLayout(new GridBagLayout());
         setUpTable();
         setUpAddRowsButton();
@@ -29,7 +38,9 @@ public class FirstRenegotiation extends JFrame {
         setUpOkButton();
     }
 
-
+    /**
+     * Creates a table in which the user will input the clients data
+     */
     private void setUpTable() {
         String[] columnNames = {"Value (R$)", "Due Date (dd/mm/yyyy)"};
         String[][] data = new String[5][2];
@@ -46,6 +57,9 @@ public class FirstRenegotiation extends JFrame {
         add(scrollPane, CONSTRAINTS);
     }
 
+    /**
+     * Button that add more rows to the table, if needed
+     */
     private void setUpAddRowsButton() {
         JButton addRows = new JButton("Add rows");
         addRows.setMnemonic(KeyEvent.VK_R);
@@ -59,6 +73,9 @@ public class FirstRenegotiation extends JFrame {
         addRows.addActionListener(e -> model.addRow(new String[2]));
     }
 
+    /**
+     * Creates a label for the date of the first payment
+     */
     private void setUpDate1stPaymentLabel() {
         JLabel date1stPayment = new JLabel("First date for payment (dd/mm/yyyy):");
         CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
@@ -69,6 +86,9 @@ public class FirstRenegotiation extends JFrame {
         add(date1stPayment, CONSTRAINTS);
     }
 
+    /**
+     * Creates a text field for the date of the first payment
+     */
     private void setUpNewDate() {
         newDate = new JTextField();
         newDate.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -80,6 +100,9 @@ public class FirstRenegotiation extends JFrame {
         add(newDate, CONSTRAINTS);
     }
 
+    /**
+     * Creates a label for the interest
+     */
     private void setUpInterestLabel() {
         JLabel interest = new JLabel("Interest");
         CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
@@ -90,6 +113,12 @@ public class FirstRenegotiation extends JFrame {
         add(interest, CONSTRAINTS);
     }
 
+    /**
+     * Creates a radio button for the automatic interest type. If this radio button is selected,
+     * then the text field for manual interest will be disabled.
+     *
+     * @see UpdatedValue#decideInterest()
+     */
     private void setUpAutomaticInterestRadioButton() {
         automatic = new JRadioButton("Automatic");
         automatic.setMnemonic(KeyEvent.VK_A);
@@ -109,6 +138,10 @@ public class FirstRenegotiation extends JFrame {
         });
     }
 
+    /**
+     * Creates a radio button for the manual interest type. If this radio button is selected,
+     * then the text field for manual interest will be enabled.
+     */
     private void setUpManualInterestRadioButton() {
         manual = new JRadioButton("Manual (%)");
         manual.setMnemonic(KeyEvent.VK_M);
@@ -127,7 +160,9 @@ public class FirstRenegotiation extends JFrame {
         });
     }
 
-
+    /**
+     * Creates a text field so the user can input the interest manually
+     */
     private void setUpManualInterestTextField() {
         manualInterest = new JFormattedTextField();
         manualInterest.setEnabled(false);
@@ -139,6 +174,9 @@ public class FirstRenegotiation extends JFrame {
         add(manualInterest, CONSTRAINTS);
     }
 
+    /**
+     * Creates an exit button
+     */
     private void setUpExitButton() {
         JButton exit = new JButton("Exit");
         exit.setMnemonic(KeyEvent.VK_E);
@@ -153,6 +191,9 @@ public class FirstRenegotiation extends JFrame {
 
     }
 
+    /**
+     * Creates an ok button that moves to the next screen
+     */
     private void setUpOkButton() {
         JButton ok = new JButton("OK");
         ok.setMnemonic(KeyEvent.VK_O);
@@ -166,6 +207,12 @@ public class FirstRenegotiation extends JFrame {
         ok.addActionListener(e -> check());
     }
 
+    /**
+     * Checks if a string can be parsed into a double
+     *
+     * @param input string that will be parsed into a double
+     * @return true if input can be parsed into double, false otherwise
+     */
     private boolean isDouble(String input) {
         try {
             Double.parseDouble(input);
@@ -175,6 +222,12 @@ public class FirstRenegotiation extends JFrame {
         }
     }
 
+    /**
+     * Checks if the value of a text field can be parsed into a date with the dd/MM/yyyy format
+     *
+     * @param dateTextField text field whose text will be parsed into a date
+     * @return true if the input can be parsed into date, false otherwise
+     */
     private boolean isDate(JTextField dateTextField) {
         boolean dateIsCorrect = false;
         String date = dateTextField.getText();
@@ -197,12 +250,16 @@ public class FirstRenegotiation extends JFrame {
         }
 
         return dateIsCorrect;
-
     }
 
-
+    /**
+     * Sets the interest as the value inputted in the text field
+     *
+     * @param field text field in which the user inputted the interest
+     * @return the value of the interest
+     */
     private double setInterest(JTextField field) {
-        //Set the interest as the value inputted in the text field
+
         double interest = 0.0;
         if (field.isEnabled() && isDouble(field.getText())) {
             interest = Double.parseDouble(field.getText());
@@ -210,9 +267,11 @@ public class FirstRenegotiation extends JFrame {
         return interest;
     }
 
-
+    /**
+     * Checks if any of the text fields is filled incorrectly and returns a message dialog if yes.
+     * If everything is filled correctly, the user moves on to the result screen
+     */
     private void check() {
-        //Check if any of the text fields is filled incorrectly and return a message dialog if yes
         if (!isDate(newDate)) {
             JOptionPane.showMessageDialog(null, "Please enter a valid date for payment.");
         }
@@ -220,17 +279,16 @@ public class FirstRenegotiation extends JFrame {
             JOptionPane.showMessageDialog(null, "Please select the interest type.");
         } else if (manual.isSelected() && !isDouble(manualInterest.getText())) {
             JOptionPane.showMessageDialog(null, "Please enter a valid value for the interest.");
-
         } else {
             renegotiate();
         }
 
-
     }
 
+    /**
+     * Opens a new window with the updated value of the debt.
+     */
     private void renegotiate() {
-        //If everything is filled correctly, open the window with the results
-
         Installments[] installments = new Installments[table.getModel().getRowCount()];
         double interest = this.setInterest(manualInterest);
         UpdatedValue updated = new UpdatedValue(installments, newDate.getText(), interest);
@@ -242,11 +300,11 @@ public class FirstRenegotiation extends JFrame {
         gui.setResizable(false);
         gui.setLocationRelativeTo(null);
         gui.setTitle("Renegotiation");
-
-
     }
 
-
+    /**
+     * Launches the program
+     */
     public void go() {
         try {
             FirstRenegotiation gui = new FirstRenegotiation();
@@ -259,8 +317,6 @@ public class FirstRenegotiation extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
 }

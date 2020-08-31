@@ -1,3 +1,9 @@
+/**
+ * Represents a single installment
+ *
+ * @author Jonas C. Costa
+ */
+
 import java.text.DecimalFormat;
 
 public class Installments {
@@ -48,11 +54,11 @@ public class Installments {
     public Installments() {
     }
 
-    public String toString(){
+    public String toString() {
         return "Old value: R$ " + this.getValue() + "   New value: R$ " + this.formatter(this.getNewValue()) + "   Interest: R$ " + this.formatter(this.getInterest()) + "   Old date: " + this.getDate();
     }
 
-    public String formatter(double a){
+    public String formatter(double a) {
         DecimalFormat numberFormat = new DecimalFormat("#.00");
         return numberFormat.format(a);
     }

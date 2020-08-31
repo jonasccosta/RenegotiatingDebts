@@ -1,3 +1,9 @@
+/**
+ * Holds information and manipulates the new installments, in case the client wants to divide their debts again
+ *
+ * @author Jonas C. Costa
+ */
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,19 +22,25 @@ public class NewInstallments {
         this.daysInstallments = daysInstallments;
     }
 
+    /**
+     * Divides the new value into a specific number of installments
+     * @param numberOfInstallments number of new installments
+     * @return the value of each new intallment
+     */
     public double firstValue(int numberOfInstallments) {
-        //Divides the new value into a specific number of installments
         return firstInstallment.decideNewValue() / numberOfInstallments;
     }
-
 
     public String toString() {
         return numberOfInstallments + " installments, costing R$" + firstInstallment.formatter(finalValue()) + " each, for the dates:";
     }
 
+    /**
+     * Updates, with interest, the value returned by the method firstValue(int numberOfInstallments) for the number of
+     * dates and way of install specified by the user
+     * @return array containing the new values
+     */
     public double[] newValues() {
-        /*Update, with interest, the value returned by the method firstValue(int numberOfInstallments)
-        for the number of dates and way of install specified by the client*/
         double[] newValues = new double[numberOfInstallments];
         for (int i = 0; i < newValues.length; i++) {
             newValues[i] = firstValue(numberOfInstallments) + firstValue(numberOfInstallments) * i * daysInstallments * firstInstallment.decideInterest() / 30;
@@ -36,8 +48,11 @@ public class NewInstallments {
         return newValues;
     }
 
+    /**
+     * Returns the final value of the debt by adding up all the elements of the array newValues()[]
+     * @return the total value of the debt
+     */
     public double finalValue() {
-        //Return the final value of the debt by adding up all the elements of the array newValues()[]
         for (int i = 0; i < newValues().length; i++) {
             finalValue += newValues()[i];
         }
@@ -46,10 +61,13 @@ public class NewInstallments {
 
     }
 
+    /**
+     * Return the dates in which the client will make the payments being that the difference between the dates will be the
+     * value specified by the user
+     * @return an array containing the new dates
+     */
     public String[] setNewDates() {
-        /*Return the dates in which the client will make the payments
-            being that the difference between the dates will be the
-            value specified by the client*/
+
         String[] newDates = new String[numberOfInstallments];
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         Date d = null;
@@ -74,9 +92,13 @@ public class NewInstallments {
         return newDates;
     }
 
+    /**
+     * Put the elements of a array of string into a single string with correct punctuation and spacing
+     * @param a array of strings
+     * @return single string representing the elements of the array
+     */
     public String toString2(String[] a) {
-        /*Put the elements of a array into a single string
-        with correct punctuation and spacing*/
+
         StringBuilder b = new StringBuilder();
         for (int i = 0; i < a.length - 1; i++) {
             b.append(a[i]).append(", ");
@@ -86,9 +108,12 @@ public class NewInstallments {
         return b.toString();
     }
 
+    /**
+     * Returns an array with the original value, original date, updated value and interest for each of the installments
+     * first inputted by the user.
+     * @return an array of installments containing the new information about the debt
+     */
     public Installments[] newInst() {
-        /*Returns an array with the original value, original date, updated value
-        and interest for each of the installments first inputted by the user*/
         Installments[] inst = new Installments[firstInstallment.getInstallmentCount()];
         double difference = (finalValue() * numberOfInstallments - firstInstallment.decideNewValue()) / inst.length;
         for (int i = 0; i < inst.length; i++) {

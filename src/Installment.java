@@ -1,3 +1,9 @@
+/**
+ * Class allows the user to input information about dividing the debt into new installments
+ *
+ * @author: Jonas C. Costa
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -24,6 +30,9 @@ public class Installment extends JFrame {
 
     }
 
+    /**
+     * Creates a label for the number of new installments
+     */
     private void setNumberOfInstallmentsLabel() {
         JLabel numberInstallments = new JLabel("Nº of new installments");
         CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
@@ -34,6 +43,9 @@ public class Installment extends JFrame {
         add(numberInstallments, CONSTRAINTS);
     }
 
+    /**
+     * Creates a text field for the number of new installments
+     */
     private void setUpNumberOfInstallmentsTextField() {
         nInstallments = new JTextField();
         CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
@@ -44,6 +56,9 @@ public class Installment extends JFrame {
         add(nInstallments, CONSTRAINTS);
     }
 
+    /**
+     * Creates a label for the way of install (how many days between an instalment and the next
+     */
     private void setUpWayOfInstallLabel() {
         JLabel wayOfInstall = new JLabel("Way of Install");
         CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
@@ -54,6 +69,9 @@ public class Installment extends JFrame {
         add(wayOfInstall, CONSTRAINTS);
     }
 
+    /**
+     * Creates a radio button for the 15-day option of way of install
+     */
     private void setUpFifteenRadioButton() {
         fifteen = new JRadioButton("15 days");
         CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
@@ -71,6 +89,9 @@ public class Installment extends JFrame {
 
     }
 
+    /**
+     * Creates a radio button for the 30-day option of way of install
+     */
     private void setUpThirtyRadioButton() {
         thirty = new JRadioButton("30 days");
         CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
@@ -89,6 +110,10 @@ public class Installment extends JFrame {
 
     }
 
+    /**
+     * Creates a radio button for the other number of days option of way of install
+     * If this button is selected, its correspondent text field is enable
+     */
     private void setUpOtherRadioButton() {
         other = new JRadioButton("Other (days)");
         CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
@@ -103,9 +128,11 @@ public class Installment extends JFrame {
                 nOther.setEnabled(true);
             }
         });
-
     }
 
+    /**
+     * Creates a text field so the user can input a new way of install
+     */
     private void setUpOtherTextField() {
         nOther = new JTextField();
         nOther.setEnabled(false);
@@ -117,8 +144,10 @@ public class Installment extends JFrame {
         add(nOther, CONSTRAINTS);
     }
 
+    /**
+     * Creates a button that allows the user to to back to the previous screen
+     */
     private void setUpReturnButton() {
-
         JButton returnButton = new JButton("Return");
         returnButton.setMnemonic(KeyEvent.VK_R);
         CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
@@ -131,8 +160,10 @@ public class Installment extends JFrame {
 
     }
 
+    /**
+     * Creates an exit button
+     */
     private void setUpExitButton() {
-
         JButton exit = new JButton("Exit");
         exit.setMnemonic(KeyEvent.VK_E);
         CONSTRAINTS.fill = GridBagConstraints.HORIZONTAL;
@@ -145,6 +176,9 @@ public class Installment extends JFrame {
         exit.addActionListener(e -> System.exit(0));
     }
 
+    /**
+     * Creates an ok button that moves to the next screen
+     */
     private void setUpOkButton() {
         JButton ok = new JButton("OK");
         ok.setMnemonic(KeyEvent.VK_O);
@@ -158,6 +192,12 @@ public class Installment extends JFrame {
 
     }
 
+    /**
+     * Checks if a string can be parsed into an integer
+     *
+     * @param input string that will be parsed into a integer
+     * @return true if input can be parsed into integer, false otherwise
+     */
     private boolean isInteger(String input) {
         //Check if a string can be parsed into an int
         try {
@@ -168,8 +208,11 @@ public class Installment extends JFrame {
         }
     }
 
+    /**
+     * @return a newInstallments object with the values inputted by the user
+     */
     public NewInstallments createNewInstallments() {
-        //Creates a NewInstallments class with the values inputted by the user
+
         int days;
         int nInstall = Integer.parseInt(nInstallments.getText());
 
@@ -184,8 +227,11 @@ public class Installment extends JFrame {
         return new NewInstallments(updatedValue, nInstall, days);
     }
 
+    /**
+     * Checks if any of the text fields is filled incorrectly and returns a message dialog if yes.
+     * If everything is filled correctly, the user moves on to the result screen
+     */
     public void check() {
-        //Check if any of the text fields is filled incorrectly and return a message dialog if yes
         if (!isInteger(nInstallments.getText())) {
             JOptionPane.showMessageDialog(null, "Please enter the number of installments.");
         }
@@ -199,6 +245,9 @@ public class Installment extends JFrame {
         }
     }
 
+    /**
+     * Opens a new window with the updated value of the debt for the new installments.
+     */
     private void reinstall() {
         NewInstallments newInstallments = this.createNewInstallments();
         FinalResult gui = new FinalResult(newInstallments.toString(), newInstallments.toString2(newInstallments.setNewDates()), newInstallments.newInst(), updatedValue);
@@ -210,7 +259,6 @@ public class Installment extends JFrame {
         gui.setTitle("Renegotiation");
 
     }
-
 
     public void setUpdatedValue(UpdatedValue updatedValue) {
         this.updatedValue = updatedValue;

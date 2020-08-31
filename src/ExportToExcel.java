@@ -1,5 +1,10 @@
+/**
+ * Creates an Excel file with the information from a JTable
+ *
+ * @author Jonas C. Costa
+ */
+
 import java.io.File;
-import java.io.FileNotFoundException;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -38,7 +43,7 @@ public class ExportToExcel {
 
             File file = new File(fileDictName+ ".xls");
 
-            if (file.exists() == false) {
+            if (!file.exists()) {
                 //Creates a xls file with the information from a JTable
                 Workbook wb = new HSSFWorkbook();
                 CreationHelper createhelper = wb.getCreationHelper();
@@ -64,11 +69,9 @@ public class ExportToExcel {
 
             }
 
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(ExportToExcel.class.getName()).log(Level.SEVERE, null, ex);
-
         } catch (IOException ex) {
             Logger.getLogger(ExportToExcel.class.getName()).log(Level.SEVERE, null, ex);
+
         }
     }
 }

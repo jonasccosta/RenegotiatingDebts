@@ -1,3 +1,9 @@
+/**
+ * Class the holds the template for both the result screens
+ *
+ * @author Jonas C. Costa
+ */
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -8,17 +14,20 @@ public class Result extends JFrame {
     private final GridBagConstraints CONSTRAINTS = new GridBagConstraints();
     private JTable tableResults;
 
-    public Result(String result1Text, String result2Text, UpdatedValue updatedValue) {
+    public Result(String result1Text, String result2Text) {
         setLayout(new GridBagLayout());
         setUpResult1Label(result1Text);
         setUpResult2Label(result2Text);
-        setUpTable(updatedValue);
+        setUpTable();
         setUpExitButton();
         setUpReturnButton();
         setUpSaveButton();
-
     }
 
+    /**
+     * Creates a label showing the text (first line of the result)
+     * @param text text of the label
+     */
     private void setUpResult1Label(String text) {
         JLabel result1 = new JLabel(text);
         CONSTRAINTS.fill = GridBagConstraints.CENTER;
@@ -30,6 +39,10 @@ public class Result extends JFrame {
         add(result1, CONSTRAINTS);
     }
 
+    /**
+     * Creates a label showing the text (second line of the result)
+     * @param text text of the label
+     */
     private void setUpResult2Label(String text) {
         JLabel result2 = new JLabel(text);
         CONSTRAINTS.fill = GridBagConstraints.CENTER;
@@ -41,7 +54,11 @@ public class Result extends JFrame {
         add(result2, CONSTRAINTS);
     }
 
-    private void setUpTable(UpdatedValue updatedValue) {
+    /**
+     * Creates a table with the updated value of each previous installment, including the old value,
+     * new value, interest, and old date
+     */
+    private void setUpTable() {
         String[] columnNames = {"Old Value", "Old Date", "Interest", "New Value"};
         String[][] data = new String[5][4];
         tableResults = new JTable(new DefaultTableModel(data, columnNames));
@@ -56,10 +73,12 @@ public class Result extends JFrame {
         CONSTRAINTS.insets = new Insets(10, 5, 1, 5);
         JScrollPane scrollPane = new JScrollPane(tableResults);
         add(scrollPane, CONSTRAINTS);
-        //fillTable(updatedValue, tableResults);
 
     }
 
+    /**
+     * Creates an exit button
+     */
     private void setUpExitButton() {
         JButton exit = new JButton("Exit");
         exit.setMnemonic(KeyEvent.VK_E);
@@ -74,6 +93,9 @@ public class Result extends JFrame {
 
     }
 
+    /**
+     * Creates an return button that allows the user to go back to the previous screen
+     */
     private void setUpReturnButton() {
         JButton returnButton = new JButton("Return");
         returnButton.setMnemonic(KeyEvent.VK_R);
@@ -87,6 +109,9 @@ public class Result extends JFrame {
 
     }
 
+    /**
+     * Creates a button that allows the user to save the table into an spreadsheet
+     */
     private void setUpSaveButton() {
         JButton save = new JButton("Save");
         save.setMnemonic(KeyEvent.VK_S);
@@ -104,6 +129,10 @@ public class Result extends JFrame {
 
     }
 
+    /**
+     * Fills the table with the updated data about the debt
+     * @param updatedValue holds the information about the debt
+     */
     protected void fillTable(UpdatedValue updatedValue) {
         for (int i = 0; i < updatedValue.getInstallmentCount(); i++) {
             //Put the information from an array of installments into a table
@@ -119,24 +148,20 @@ public class Result extends JFrame {
         }
     }
 
-    protected void fillTable (Installments[] installments, UpdatedValue updatedValue){
+    /**
+     * Fills the table with the updated data about the debt
+     * @param installments holds information about the new installments
+     * @param updatedValue holds the information about the debt
+     */
+    protected void fillTable(Installments[] installments, UpdatedValue updatedValue) {
         System.out.println(installments.length);
-        for(int i = 0; i < installments.length; i++){
-            //Put the information from an array of installments into a table
+        for (int i = 0; i < installments.length; i++) {
             tableResults.getModel().setValueAt("R$ " + updatedValue.formatter(installments[i].getValue()), i, 0);
             tableResults.getModel().setValueAt(installments[i].getDate(), i, 1);
-            tableResults.getModel().setValueAt("R$ " + updatedValue.formatter(installments[i].getInterest()),i, 2);
+            tableResults.getModel().setValueAt("R$ " + updatedValue.formatter(installments[i].getInterest()), i, 2);
             tableResults.getModel().setValueAt("R$ " + updatedValue.formatter(installments[i].getNewValue()), i, 3);
         }
     }
-
-
-
-
-
-
-
-
 
 
 }
