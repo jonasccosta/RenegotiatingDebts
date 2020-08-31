@@ -242,7 +242,7 @@ public class FirstRenegotiation extends JFrame {
         gui.setResizable(false);
         gui.setLocationRelativeTo(null);
         gui.setTitle("Renegotiation");
-        gui.setUpdatedValue(updated);
+
 
     }
 
