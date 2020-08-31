@@ -154,7 +154,6 @@ public class ResultScreen extends JFrame {
      * @param debtUpdater holds the information about the debt
      */
     protected void fillTable(Installment[] installments, DebtUpdater debtUpdater) {
-        System.out.println(installments.length);
         for (int i = 0; i < installments.length; i++) {
             tableResults.getModel().setValueAt("R$ " + debtUpdater.formatter(installments[i].getValue()), i, 0);
             tableResults.getModel().setValueAt(installments[i].getDate(), i, 1);
